@@ -3,89 +3,89 @@ const React = require('react');
 const {useState, useEffect} = React;
 const {createRoot} = require('react-dom/client');
 
-const handleDomo = (e, onDomoAdded) => {
+const handleTask = (e, onTaskAdded) => {
     e.preventDefault();
     helper.hideError();
 
-    const name = e.target.querySelector('#domoName').value;
-    const age = e.target.querySelector('#domoAge').value;
-    const level = e.target.querySelector('#domoLevel').value;
+    const name = e.target.querySelector('#taskName').value;
+    const priority = e.target.querySelector('#taskPriority').value;
+    const status = e.target.querySelector('#taskStatus').checked;
 
-    if (!name || !age || !level) {
+    if (!name || !priority) {
         helper.handleError('All fields are required!');
         return false;
     }
 
-    helper.sendPost(e.target.action, {name, age, level}, () => onDomoAdded(name, age, level));
+    helper.sendPost(e.target.action, {name, priority, status}, () => onTaskAdded(name, priority, status));
     return false;
 }
 
 
 
-const DomoForm = (props) => {
+const TaskForm = (props) => {
     return(
-        <form id="domoForm"
-            onSubmit={(e) => handleDomo(e, props.triggerReload)}
-            name="domoForm"
+        <form id="taskForm"
+            onSubmit={(e) => handleTask(e, props.triggerReload)}
+            name="taskForm"
             action="/maker"
             method="POST"
-            className="domoForm"
+            className="taskForm"
         >
             <div>
                 <label htmlFor="name">Name: </label>
-                <input id="domoName" type="text" name="name" placeholder="Domo Name" />
+                <input id="taskName" type="text" name="name" placeholder="Task Name" />
             </div>
             <div>
-                <label htmlFor="age">Age: </label>
-                <input id="domoAge" type="number" min="0" name="age" />
+                <label htmlFor="priority">Priority: </label>
+                <input id="taskPriority" type="number" min="0" name="priority" />
             </div>
             <div>
-                <label htmlFor="level">Level: </label>
-                <input id="domoLevel" type="number" min="1" name="level" />
+                <label htmlFor="status">Status: </label>
+                <input id="taskStatus" type="checkbox" name="status" />
             </div>
-            <input className="makeDomoSubmit" type="submit" value="Make Domo" />
+            <input className="makeTaskSubmit" type="submit" value="Make Task" />
         </form>
     );
 }
 
-const DomoList = (props) => {
-    const [domos, setDomos] = useState([props.domos]);
+const TaskList = (props) => {
+    const [tasks, setTasks] = useState([props.tasks]);
     const [sortKey, setSortKey] = useState('name'); 
 
     useEffect(() => {
-        const loadDomosFromServer = async () => {
-            const response = await fetch('/getDomos');
+        const loadTasksFromServer = async () => {
+            const response = await fetch('/getTasks');
             const data = await response.json();
-            setDomos(data.domos);
+            setTasks(data.tasks);
         };
-        loadDomosFromServer();
-    }, [props.reloadDomos]);
+        loadTasksFromServer();
+    }, [props.reloadTasks]);
 
     const handleSortChange = (e) => {
         setSortKey(e.target.value);
     };
 
-    const sortedDomos = [...domos].sort((a, b) => {
+    const sortedTasks = [...tasks].sort((a, b) => {
         if (sortKey === 'name') return a.name.localeCompare(b.name);
-        if (sortKey === 'age') return a.age - b.age;
-        if (sortKey === 'level') return a.level - b.level;
+        if (sortKey === 'priority') return a.priority - b.priority;
+        if (sortKey === 'status') return a.status === b.status ? 0 : a.status ? -1 : 1;
         return 0;
     });
 
-    if (domos.length === 0) {
+    if (tasks.length === 0) {
         return (
-            <div className="domoList">
-                <h3 className="emptyDomo">No Domos yet!</h3>
+            <div className="taskList">
+                <h3 className="emptyTask">No Tasks yet!</h3>
             </div>
         );
     }
 
-    const domoNodes = sortedDomos.map((domo) => (
-        <div key={domo._id} className="domo">
+    const taskNodes = sortedTasks.map((task) => (
+        <div key={task._id} className="task">
             <img src="/assets/img/domoface.jpeg" alt="domo face" className="domoFace" />
-            <h3 className="domoName">{domo.name}</h3>
-            <h3 className="domoAge">Age: {domo.age}</h3>
-            <h3 className="domoLevel">Level: {domo.level}</h3>
+            <h3 className="taskName">{task.name}</h3>
+            <h3 className="taskPriority">Priority: {task.priority}</h3>
+            <h3 className="taskStatus">Done?: {task.status ? 'Yes' : 'No'}</h3> 
         </div>
     ));
 
@@ -95,25 +95,25 @@ const DomoList = (props) => {
                 <label htmlFor="sort">Sort By: </label>
                 <select id="sort" onChange={handleSortChange}>
                     <option value="name">Name</option>
-                    <option value="age">Age</option>
-                    <option value="level">Level</option>
+                    <option value="priority">Priority</option>
+                    <option value="statys">Status</option>
                 </select>
             </div>
-            <div className="domoList">{domoNodes}</div>
+            <div className="taskList">{taskNodes}</div>
         </div>
     );
 };
 
 const App = () => {
-    const [reloadDomos, setReloadDomos] = useState(false);
+    const [reloadTasks, setReloadTasks] = useState(false);
 
     return (
         <div>
-            <div id="makeDomo">
-            <DomoForm triggerReload={() => setReloadDomos(!reloadDomos)} />
+            <div id="makeTask">
+            <TaskForm triggerReload={() => setReloadTasks(!reloadTasks)} />
             </div>
-            <div id="domos">
-                <DomoList domos={[]} reloadDomos={reloadDomos} />
+            <div id="tasks">
+                <TaskList tasks={[]} reloadTasks={reloadTasks} />
             </div>
         </div>
     );
