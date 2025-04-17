@@ -50,17 +50,23 @@ const TaskForm = (props) => {
 };
 
 const TaskDetailsModal = ({ task, onClose }) => {
-    if (!task) return null;
+    if (!task) {
+        return (
+            <div className="taskDetailsBox">
+                <h3>Task Details</h3>
+                <p>Select a task to view details.</p>
+            </div>
+        );
+    }
 
     return (
-        <div className="modal">
-            <div className="modalContent">
-                <h2>{task.name}</h2>
-                <p><strong>Priority:</strong> {task.priority}</p>
-                <p><strong>Description:</strong> {task.description || 'No description provided'}</p>
-                <p><strong>Status:</strong> {task.status ? 'Completed' : 'Incomplete'}</p>
-                <button onClick={onClose}>Close</button>
-            </div>
+        <div className="taskDetailsBox">
+            <h3>Task Details</h3>
+            <p><strong>Name:</strong> {task.name}</p>
+            <p><strong>Priority:</strong> {task.priority}</p>
+            <p><strong>Description:</strong> {task.description || 'No description provided'}</p>
+            <p><strong>Status:</strong> {task.status ? 'Completed' : 'Incomplete'}</p>
+            <button onClick={onClose} className="closeButton">Close</button>
         </div>
     );
 };
@@ -118,12 +124,59 @@ const TaskList = (props) => {
             const response = await fetch('/getTasks');
             const data = await response.json();
             setTasks(data.tasks);
+
+            // Update the selected task if it exists in the updated tasks list
+            if (selectedTask) {
+                const updatedTask = data.tasks.find((task) => task._id === selectedTask._id);
+                if (updatedTask) {
+                    setSelectedTask(updatedTask);
+                }
+            }
         };
         loadTasksFromServer();
     }, [props.reloadTasks]);
 
-    const handleSortChange = (sortKey) => {
-        setSortKey(sortKey);
+    const handleSortChange = (key) => {
+        setSortKey(key);
+    };
+
+    const handleFilterChange = (value) => {
+        setFilter(value);
+        setCurrentPage(1); // Reset to the first page when filtering
+    };
+
+    const handleTaskClick = (task) => {
+        setSelectedTask(task);
+    };
+
+    const closeModal = () => {
+        setSelectedTask(null);
+    };
+
+    const toggleTaskStatus = async (taskId, currentStatus) => {
+        try {
+            const response = await fetch('/updateTaskStatus', {
+                method: 'PATCH',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ taskId, status: !currentStatus }),
+            });
+
+            const result = await response.json();
+            if (result.error) {
+                console.error(result.error);
+            } else {
+                props.triggerReload(); // Reload the task list after updating
+
+                // Update the selected task if it matches the updated task
+                if (selectedTask && selectedTask._id === taskId) {
+                    setSelectedTask({ ...selectedTask, status: !currentStatus });
+                }
+            }
+        } catch (err) {
+            console.error('Failed to update task status:', err);
+        }
     };
 
     const filteredTasks = tasks.filter((task) => {
@@ -145,39 +198,6 @@ const TaskList = (props) => {
 
     const totalPages = Math.ceil(sortedTasks.length / tasksPerPage);
 
-    const toggleTaskStatus = async (taskId, currentStatus) => {
-        const response = await fetch('/updateTaskStatus', {
-            method: 'PATCH',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({ taskId, status: !currentStatus }),
-        });
-
-        const result = await response.json();
-        if (result.error) {
-            console.error(result.error);
-        } else {
-            props.triggerReload();
-        }
-    };
-
-    const handleTaskClick = (task) => {
-        setSelectedTask(task);
-    };
-
-    const closeModal = () => {
-        setSelectedTask(null);
-    };
-
-    if (tasks.length === 0) {
-        return (
-            <div className="taskList">
-                <h3 className="emptyTask">No Tasks yet!</h3>
-            </div>
-        );
-    }
-
     const taskNodes = paginatedTasks.map((task) => (
         <div
             key={task._id}
@@ -192,7 +212,7 @@ const TaskList = (props) => {
                 <input
                     type="checkbox"
                     checked={task.status}
-                    onChange={() => toggleTaskStatus(task._id, task.status)}
+                    onChange={() => toggleTaskStatus(task._id, task.status)} 
                 />
                 Mark as Done
             </label>
@@ -201,11 +221,17 @@ const TaskList = (props) => {
 
     return (
         <div>
-            <SortOptions sortKey={sortKey} onSortChange={handleSortChange} />
-            <TaskFilter filter={filter} onFilterChange={setFilter} />
-            <div className="taskList">{taskNodes}</div>
-            <Pagination currentPage={currentPage} totalPages={totalPages} onPageChange={setCurrentPage} />
+            <div className="controls">
+                <SortOptions sortKey={sortKey} onSortChange={handleSortChange} />
+                <TaskFilter filter={filter} onFilterChange={handleFilterChange} />
+            </div>
             <TaskDetailsModal task={selectedTask} onClose={closeModal} />
+            <div className="taskList">{taskNodes}</div>
+            <Pagination
+                currentPage={currentPage}
+                totalPages={totalPages}
+                onPageChange={setCurrentPage}
+            />
         </div>
     );
 };
