@@ -5,6 +5,7 @@ const { Task: TaskModel } = models;
 
 const makerPage = (req, res) => res.render('app');
 
+// Create a new task
 const makeTask = async (req, res) => {
   if (!req.body.name || !req.body.priority) {
     return res.status(400).json({ error: 'Name and priority are required!' });
@@ -36,6 +37,7 @@ const makeTask = async (req, res) => {
   }
 };
 
+// Get all tasks for the logged-in user
 const getTasks = async (req, res) => {
   try {
     const query = { owner: req.session.account._id };
@@ -48,6 +50,7 @@ const getTasks = async (req, res) => {
   }
 };
 
+// Helper function for Modal
 const updateTaskStatus = async (req, res) => {
   if (!req.body.taskId || req.body.status === undefined) {
     return res.status(400).json({ error: 'Task ID and status are required!' });
@@ -71,6 +74,7 @@ const updateTaskStatus = async (req, res) => {
   }
 };
 
+// Helper function for Modal
 const getTaskById = async (req, res) => {
   try {
     const task = await Task.findById(req.params.id);

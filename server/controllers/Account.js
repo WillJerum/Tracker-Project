@@ -58,6 +58,8 @@ const signup = async (req, res) => {
   }
 };
 
+// Function to change a user's password
+// Only accessible when logged in
 const changePassword = async (req, res) => {
   const { newPassword } = req.body;
 

@@ -3,6 +3,7 @@ const React = require('react');
 const {useState, useEffect} = React;
 const {createRoot} = require('react-dom/client');
 
+// Function to handle task creation
 const handleTask = (e, onTaskAdded) => {
     e.preventDefault();
     helper.hideError();
@@ -22,6 +23,10 @@ const handleTask = (e, onTaskAdded) => {
     return false;
 }
 
+// TaskForm component
+// This component is responsible for rendering the task creation form
+// and handling the submission of new tasks.
+export
 const TaskForm = (props) => {
     return (
 <form
@@ -49,6 +54,7 @@ const TaskForm = (props) => {
     );
 };
 
+// Task details modal component
 const TaskDetailsModal = ({ task, onClose }) => {
     if (!task) {
         return (
@@ -71,6 +77,7 @@ const TaskDetailsModal = ({ task, onClose }) => {
     );
 };
 
+// Sort component
 const SortOptions = ({ sortKey, onSortChange }) => {
     return (
         <div className="sortOptions">
@@ -84,6 +91,7 @@ const SortOptions = ({ sortKey, onSortChange }) => {
     );
 };
 
+// Filter component
 const TaskFilter = ({ filter, onFilterChange }) => {
     return (
         <div className="taskFilter">
@@ -97,6 +105,7 @@ const TaskFilter = ({ filter, onFilterChange }) => {
     );
 };
 
+// Pagination component
 const Pagination = ({ currentPage, totalPages, onPageChange }) => {
     return (
         <div className="pagination">
@@ -111,6 +120,7 @@ const Pagination = ({ currentPage, totalPages, onPageChange }) => {
     );
 };
 
+// TaskList component
 const TaskList = (props) => {
     const [tasks, setTasks] = useState([]);
     const [sortKey, setSortKey] = useState('name');
@@ -186,9 +196,9 @@ const TaskList = (props) => {
     });
 
     const sortedTasks = [...filteredTasks].sort((a, b) => {
-        if (sortKey === 'name') return a.name.localeCompare(b.name);
-        if (sortKey === 'priority') return a.priority - b.priority;
-        if (sortKey === 'status') return a.status === b.status ? 0 : a.status ? -1 : 1;
+        if (sortKey === 'name') return a.name.localeCompare(b.name); // Name Sort
+        if (sortKey === 'priority') return a.priority - b.priority; // Priority Sort
+        if (sortKey === 'status') return a.status === b.status ? 0 : a.status ? -1 : 1; // Status Sort
         return 0;
     });
 

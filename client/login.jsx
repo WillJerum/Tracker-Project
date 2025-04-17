@@ -2,6 +2,8 @@ const helper = require('./helper.js');
 const React = require('react');
 const {createRoot} = require('react-dom/client');
 
+// Function to handle login
+// This function is responsible for handling the login process, including form submission and validation.
 const handleLogin = (e) => {
     e.preventDefault();
     helper.hideError();
@@ -17,6 +19,7 @@ const handleLogin = (e) => {
     return false;
 }
 
+// Function to handle signup
 const handleSignup = (e) => {
     e.preventDefault();
     helper.hideError();
@@ -39,6 +42,7 @@ const handleSignup = (e) => {
     return false;
 }
 
+// Login component
 const LoginWindow = (props) => {
     return (
         <div class="loginBox">
@@ -59,6 +63,8 @@ const LoginWindow = (props) => {
     );
 }
 
+// Signup component
+// This component is responsible for rendering the signup form and handling the signup process.
 const SignupWindow = (props) => {
     return (
         <div class="loginBox">

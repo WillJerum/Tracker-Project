@@ -56,7 +56,7 @@ nav:nth-child(1) {
     position: fixed;
     top: 50px;
     left: 0;
-    width: 300px;
+    width: 250px; /* Reduced width */
     height: calc(100% - 50px);
     background-color: #1e1e1e; /* Darker background for sidebar */
     padding: 20px;
@@ -217,34 +217,31 @@ nav:nth-child(1) {
 
 /* Task List */
 #tasks {
-    width: calc(100% - 320px);
-    min-width: 500px; 
-    margin-left: 320px;
+    width: calc(100% - 350px); /* Adjust width to account for the sidebar and spacing */
+    max-width: 900px; /* Set a maximum width for the task list */
+    margin: 20px auto; /* Center the task list horizontally and add vertical spacing */
+    margin-left: 320px; /* Increase left margin to create more space from the form */
+    padding: 20px; /* Add padding inside the container */
     border: 2px solid #6a0dad; /* Purple accent */
     border-radius: 8px;
-    margin-top: 100px;
-    padding: 20px;
     background-color: #1e1e1e; /* Dark background */
     color: #ffffff; /* White text */
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.5);
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.5); /* Add a shadow for better visibility */
 }
 
 .task {
     display: flex; /* Use flexbox to align items horizontally */
     align-items: center; /* Vertically align items */
     width: 100%;
-    max-width: calc(100% - 40px);
-    margin: 15px auto;
+    max-width: 800px; /* Set a fixed maximum width for each task */
+    margin: 15px auto; /* Center the task horizontally and add vertical spacing */
     padding: 20px;
     border: 2px solid #6a0dad; /* Purple accent */
     border-radius: 8px;
     background-color: #2a2a2a; /* Dark background */
     color: #ffffff; /* White text */
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.5);
-    transition: background-color 0.3s ease, border-color 0.3s ease;
-    position: relative;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.5); /* Add a shadow for better visibility */
     gap: 15px; /* Add spacing between elements */
-    margin-right: 20px; /* Add margin to the right */
 }
 
 .task:hover {
