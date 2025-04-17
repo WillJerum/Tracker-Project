@@ -31,3 +31,61 @@ strong suit. The only part of the code that was more Copilot than me was the CSS
 better served working on features and the like. The CSS code blocks I borrowed from Copilot were made based on my exact specifications, and tweaked until
 they matched my original vision. As such, you will see a lot of Copilot comments in the CSS, but the rest of the code has my hand-written comments from
 when I was working.
+
+-- URL ENDPOINTS --
+
+URL: /settings
+Supported Methods: GET
+Middleware: Requires Login
+Query Params: N/A
+Description: Displays user settings page
+Return Type(s): HTML
+
+URL: /changePassword
+Supported Methods: POST
+Middleware: Requires Login
+Query Params: newPassword
+Description: Changes user password
+Return Type(s): JSON
+
+URL: /getTasks
+Supported Methods: GET
+Middleware: Requires Login
+Query Params: id
+Description: Gets the list of tasks. Can be used with id param to find one specific task.
+Return Type(s): JSON
+
+URL: /login
+Supported Methods: GET, POST
+Middleware: Requires Secure, Requires Login
+Query Params: N/A
+Description: Displays login page. Logs a user into their account.
+Return Type(s): HTML, JSON
+
+URL: /signup
+Supported Methods: POST
+Middleware: Requires Secure, Requires Logout
+Query Params: N/A
+Description: Creates a new account
+Return Type(s): JSON
+
+URL: /logout
+Supported Methods: GET
+Middleware: Requires Login
+Query Params: N/A
+Description: Logs user out of account
+Return Type(s): HTML
+
+URL: /maker
+Supported Methods: GET, POST
+Middleware: Requires Login
+Query Params: N/A
+Description: Loads Task page. Allows user to create and view Tasks.
+Return Type(s): HTML, JSON
+
+URL: /updateTaskStatus
+Supported Methods: PATCH
+Middleware: Requires Login
+Query Params: N/A
+Description: Modifies server-side completion status of a task
+Return Type(s): JSON
