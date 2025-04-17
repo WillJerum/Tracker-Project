@@ -1,6 +1,7 @@
 const models = require('../models');
+const Task = require('../models/Task');
 
-const { Task } = models;
+const { Task: TaskModel } = models;
 
 const makerPage = (req, res) => res.render('app');
 
@@ -18,7 +19,7 @@ const makeTask = async (req, res) => {
   };
 
   try {
-    const newTask = new Task(taskData);
+    const newTask = new TaskModel(taskData);
     await newTask.save();
     return res.status(201).json({ 
       name: newTask.name, 
@@ -38,7 +39,7 @@ const makeTask = async (req, res) => {
 const getTasks = async (req, res) => {
   try {
     const query = { owner: req.session.account._id };
-    const docs = await Task.find(query).select('name priority status description').lean().exec();
+    const docs = await TaskModel.find(query).select('name priority status description').lean().exec();
 
     return res.json({ tasks: docs });
   } catch (err) {
@@ -53,7 +54,7 @@ const updateTaskStatus = async (req, res) => {
   }
 
   try {
-    const updatedTask = await Task.findOneAndUpdate(
+    const updatedTask = await TaskModel.findOneAndUpdate(
       { _id: req.body.taskId, owner: req.session.account._id }, // Ensure the task belongs to the user
       { status: req.body.status }, // Update the status field
       { new: true } // Return the updated document
@@ -70,9 +71,23 @@ const updateTaskStatus = async (req, res) => {
   }
 };
 
+const getTaskById = async (req, res) => {
+  try {
+    const task = await Task.findById(req.params.id);
+    if (!task) {
+      return res.status(404).json({ error: 'Task not found' });
+    }
+    return res.json({ task });
+  } catch (err) {
+    console.error(err);
+    return res.status(500).json({ error: 'Failed to fetch task' });
+  }
+};
+
 module.exports = {
   makerPage,
   makeTask,
   getTasks,
   updateTaskStatus,
+  getTaskById,
 };

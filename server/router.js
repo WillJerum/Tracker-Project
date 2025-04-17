@@ -5,6 +5,7 @@ console.log('controllers:', controllers);
 
 const router = (app) => {
   app.get('/getTasks', mid.requiresLogin, controllers.Task.getTasks);
+  app.get('/getTask/:id', mid.requiresLogin, controllers.Task.getTaskById);
 
   app.get('/login', mid.requiresSecure, mid.requiresLogout, controllers.Account.loginPage);
   app.post('/login', mid.requiresSecure, mid.requiresLogout, controllers.Account.login);
