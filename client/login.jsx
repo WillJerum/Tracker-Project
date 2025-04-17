@@ -134,7 +134,7 @@ const SignupWindow = (props) => {
                 <input id="pass" type="password" name="pass" placeholder="password" />
                 <label htmlFor="pass2">Retype Password: </label>
                 <input id="pass2" type="password" name="pass2" placeholder="retype password" />
-                <label htmlFor="premium">Premium Account: </label>
+                <label htmlFor="premium">Premium Account ($9.99): </label>
                 <input id="premium" type="checkbox" name="premium" />
                 <input className="formSubmit" type="submit" value="Sign up" />
             </form>
