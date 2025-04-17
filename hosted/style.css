@@ -210,67 +210,78 @@ nav:nth-child(1) {
 }
 
 .task {
-    width: 95%;
-    margin: 0 auto;
-    margin-top: 2px;
-    margin-bottom: 2px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 98%; 
+    margin: 15px auto; 
+    padding: 20px; 
     border: 2px solid #55acee;
-    border-radius: 4px;
-    background-color: #55acee;
-    padding: 10px;
-    min-height:60px;
-    overflow: hidden;
+    border-radius: 8px;
+    background-color: #f0f8ff;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    transition: background-color 0.3s ease, border-color 0.3s ease;
 }
 
 .task:hover {
-    transition: border-color 0.2s ease-out;
-    border-color: rgba(255,255,255, 0.8);
-    transition: background-color 2.6s ease-out;
-    background-color: #66bfff;
+    background-color: #e6f7ff;
+    border-color: #338acc;
 }
 
-img.domoFace {
-    margin-left: 25px;
-    margin-right: 10px;
+img.taskIcon {
     height: 50px;
     width: 50px;
     border-radius: 4px;
-    margin-top:10px;
-    float:left;
-}
-
-h3.emptyTask {
-    width: 400px;
-    font-size: 1.5em;
-    margin: 0 auto;
-    text-align: center;
-    margin-top: 18px;
+    margin-right: 15px;
 }
 
 h3.taskName {
-    float:left;
-    width: 200px;
+    flex: 3; 
+    font-size: 1.2em;
     font-weight: bold;
-    padding-left: 65px;
-    font-size: 1.5em;
+    color: #333;
+    margin: 0;
+    text-align: left; 
 }
 
 h3.taskPriority {
-    float:right;
-    text-align: left;
-    width: 100px;
+    flex: 1.5; 
+    font-size: 1em;
     font-weight: bold;
-    padding-right: 40px;
-    font-size: 1.5em;
+    color: #555;
+    text-align: center;
+    margin: 0;
 }
 
 h3.taskStatus {
-    float:right;
-    text-align: left;
-    width: 100px;
+    flex: 1.5;
+    font-size: 1em;
     font-weight: bold;
-    padding-right: 40px;
-    font-size: 1.5em;
+    color: #555;
+    text-align: center;
+    margin: 0;
+}
+
+.task label {
+    display: flex;
+    align-items: center;
+    font-size: 1em;
+    color: #333;
+    margin-left: 15px;
+}
+
+.task input[type="checkbox"] {
+    margin-right: 10px;
+    transform: scale(1.2);
+    cursor: pointer;
+}
+
+.task:first-child {
+    margin-top: 15px;
+}
+
+.task:last-child {
+    margin-bottom: 15px;
 }
 
 .task:first-child {

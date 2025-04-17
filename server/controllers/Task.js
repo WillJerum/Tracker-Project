@@ -41,8 +41,32 @@ const getTasks = async (req, res) => {
   }
 };
 
+const updateTaskStatus = async (req, res) => {
+  if (!req.body.taskId || req.body.status === undefined) {
+    return res.status(400).json({ error: 'Task ID and status are required!' });
+  }
+
+  try {
+    const updatedTask = await Task.findOneAndUpdate(
+      { _id: req.body.taskId, owner: req.session.account._id }, // Ensure the task belongs to the user
+      { status: req.body.status }, // Update the status field
+      { new: true } // Return the updated document
+    ).select('name priority status').lean();
+
+    if (!updatedTask) {
+      return res.status(404).json({ error: 'Task not found!' });
+    }
+
+    return res.json({ task: updatedTask });
+  } catch (err) {
+    console.log(err);
+    return res.status(500).json({ error: 'Error updating task status!' });
+  }
+};
+
 module.exports = {
   makerPage,
   makeTask,
   getTasks,
+  updateTaskStatus,
 };

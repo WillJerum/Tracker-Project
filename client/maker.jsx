@@ -72,6 +72,23 @@ const TaskList = (props) => {
         return 0;
     });
 
+    const toggleTaskStatus = async (taskId, currentStatus) => {
+        const response = await fetch('/updateTaskStatus', {
+            method: 'PATCH',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ taskId, status: !currentStatus }), // Toggle the status
+        });
+    
+        const result = await response.json();
+        if (result.error) {
+            console.error(result.error);
+        } else {
+            props.triggerReload(); // Use the passed triggerReload function
+        }
+    };
+
     if (tasks.length === 0) {
         return (
             <div className="taskList">
@@ -82,10 +99,16 @@ const TaskList = (props) => {
 
     const taskNodes = sortedTasks.map((task) => (
         <div key={task._id} className="task">
-            <img src="/assets/img/domoface.jpeg" alt="domo face" className="domoFace" />
+            <img src="/assets/img/clipboard.png" alt="task icon" className="taskIcon" />
             <h3 className="taskName">{task.name}</h3>
             <h3 className="taskPriority">Priority: {task.priority}</h3>
             <h3 className="taskStatus">Done?: {task.status ? 'Yes' : 'No'}</h3> 
+            <label>
+                <input
+                    type="checkbox"
+                    checked={task.status}
+                    onChange={() => toggleTaskStatus(task._id, task.status)}
+                />Mark as Done</label>
         </div>
     ));
 
@@ -96,7 +119,7 @@ const TaskList = (props) => {
                 <select id="sort" onChange={handleSortChange}>
                     <option value="name">Name</option>
                     <option value="priority">Priority</option>
-                    <option value="statys">Status</option>
+                    <option value="status">Status</option>
                 </select>
             </div>
             <div className="taskList">{taskNodes}</div>
@@ -107,13 +130,15 @@ const TaskList = (props) => {
 const App = () => {
     const [reloadTasks, setReloadTasks] = useState(false);
 
+    const triggerReload = () => setReloadTasks(!reloadTasks);
+
     return (
         <div>
             <div id="makeTask">
-            <TaskForm triggerReload={() => setReloadTasks(!reloadTasks)} />
+                <TaskForm triggerReload={triggerReload} />
             </div>
             <div id="tasks">
-                <TaskList tasks={[]} reloadTasks={reloadTasks} />
+                <TaskList tasks={[]} reloadTasks={reloadTasks} triggerReload={triggerReload} />
             </div>
         </div>
     );

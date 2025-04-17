@@ -16,6 +16,8 @@ const router = (app) => {
   app.get('/maker', mid.requiresLogin, controllers.Task.makerPage);
   app.post('/maker', mid.requiresLogin, controllers.Task.makeTask);
 
+  app.patch('/updateTaskStatus', mid.requiresLogin, controllers.Task.updateTaskStatus);
+
   app.get('/', mid.requiresSecure, mid.requiresLogout, controllers.Account.loginPage);
 };
 
