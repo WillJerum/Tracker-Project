@@ -29,22 +29,27 @@ const login = (req, res) => {
   });
 };
 
+// Function to handle user signup
 const signup = async (req, res) => {
-  const username = `${req.body.username}`;
-  const password = `${req.body.pass}`;
-  const pass2 = `${req.body.pass2}`;
+  const {
+    username, pass, pass2, premium,
+  } = req.body;
 
-  if (!username || !password || !pass2) {
+  if (!username || !pass || !pass2) {
     return res.status(400).json({ error: 'All fields are required!' });
   }
 
-  if (password !== pass2) {
+  if (pass !== pass2) {
     return res.status(400).json({ error: 'Passwords do not match!' });
   }
 
   try {
-    const hash = await Account.generateHash(password);
-    const newAccount = new Account({ username, password: hash });
+    const hash = await Account.generateHash(pass);
+    const newAccount = new Account({
+      username,
+      password: hash,
+      premium: premium || false, // Default to false if not provided
+    });
     await newAccount.save();
     req.session.account = Account.toAPI(newAccount);
     return res.json({ redirect: '/maker' });
@@ -58,7 +63,6 @@ const signup = async (req, res) => {
 };
 
 // Function to change a user's password
-// Only accessible when logged in
 const changePassword = async (req, res) => {
   const { newPassword } = req.body;
 
@@ -83,6 +87,10 @@ const changePassword = async (req, res) => {
   }
 };
 
+const getUserStatus = (req, res) => {
+  return res.json({ isPremium: req.session.account.premium });
+};
+
 module.exports = {
   loginPage,
   logout,
@@ -90,4 +98,5 @@ module.exports = {
   signup,
   settingsPage,
   changePassword,
+  getUserStatus,
 };

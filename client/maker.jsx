@@ -4,22 +4,41 @@ const {useState, useEffect} = React;
 const {createRoot} = require('react-dom/client');
 
 // Function to handle task creation
-const handleTask = (e, onTaskAdded) => {
+const handleTask = async (e, triggerReload) => {
     e.preventDefault();
     helper.hideError();
 
-    const name = e.target.querySelector('#taskName').value.trim();
-    const priority = e.target.querySelector('#taskPriority').value.trim();
-    const description = e.target.querySelector('#taskDescription').value.trim();
-
-    console.log({ name, priority, description }); // Debugging: Check the values being sent
+    const name = e.target.querySelector('#taskName').value;
+    const priority = e.target.querySelector('#taskPriority').value;
+    const description = e.target.querySelector('#taskDescription').value;
 
     if (!name || !priority) {
-        helper.handleError('All fields are required!');
+        helper.handleError('Name and priority are required!');
         return false;
     }
 
-        helper.sendPost(e.target.action, { name, priority, description, status: false }, () => onTaskAdded(name, priority, description));
+    try {
+        const response = await fetch(e.target.action, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ name, priority, description }),
+        });
+
+        const result = await response.json();
+
+        if (response.status !== 201) {
+            helper.handleError(result.error || 'An error occurred.');
+            return false;
+        }
+
+        triggerReload(); // Reload the task list
+    } catch (err) {
+        console.error('Failed to create task:', err);
+        helper.handleError('An error occurred while creating the task.');
+    }
+
     return false;
 }
 
@@ -28,8 +47,20 @@ const handleTask = (e, onTaskAdded) => {
 // and handling the submission of new tasks.
 export
 const TaskForm = (props) => {
+    const [isPremium, setIsPremium] = useState(false);
+
+    useEffect(() => {
+        const fetchUserStatus = async () => {
+            const response = await fetch('/getUserStatus');
+            const data = await response.json();
+            setIsPremium(data.isPremium);
+        };
+
+        fetchUserStatus();
+    }, []);
+
     return (
-<form
+        <form
             id="taskForm"
             onSubmit={(e) => handleTask(e, props.triggerReload)}
             name="taskForm"
@@ -49,6 +80,11 @@ const TaskForm = (props) => {
                 <label htmlFor="description">Description: </label>
                 <textarea id="taskDescription" name="description" placeholder="Task Description (optional)" rows="3"></textarea>
             </div>
+            <p className="taskLimitMessage">
+                {isPremium
+                    ? 'You can create unlimited tasks as a premium user.'
+                    : 'You can create up to 20 tasks. Upgrade to premium for unlimited tasks.'}
+            </p>
             <input className="makeTaskSubmit" type="submit" value="Make Task" />
         </form>
     );
@@ -127,6 +163,7 @@ const TaskList = (props) => {
     const [filter, setFilter] = useState('all');
     const [currentPage, setCurrentPage] = useState(1);
     const [selectedTask, setSelectedTask] = useState(null);
+    const [isPremium, setIsPremium] = useState(false); // Track if the user is premium
     const tasksPerPage = 5;
 
     useEffect(() => {
@@ -134,6 +171,11 @@ const TaskList = (props) => {
             const response = await fetch('/getTasks');
             const data = await response.json();
             setTasks(data.tasks);
+
+            // Check if the user is premium
+            if (data.isPremium !== undefined) {
+                setIsPremium(data.isPremium);
+            }
 
             // Update the selected task if it exists in the updated tasks list
             if (selectedTask) {
@@ -242,6 +284,15 @@ const TaskList = (props) => {
                 totalPages={totalPages}
                 onPageChange={setCurrentPage}
             />
+            <div className="footer">
+                {isPremium ? (
+                    <p className="premiumMessage">Thanks for supporting TaskTracker!</p>
+                ) : (
+                    <div className="adSpace">
+                        <p>Advertisement Space</p>
+                    </div>
+                )}
+            </div>
         </div>
     );
 };

@@ -89,3 +89,10 @@ Middleware: Requires Login
 Query Params: N/A
 Description: Modifies server-side completion status of a task
 Return Type(s): JSON
+
+URL: /getUserStatus
+Supported Methods: GET
+Middleware: Requires Login
+Query Params: N/A
+Description: Gets the premium status of a user.
+Return Type(s): JSON

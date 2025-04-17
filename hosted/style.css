@@ -242,6 +242,7 @@ nav:nth-child(1) {
     color: #ffffff; /* White text */
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.5); /* Add a shadow for better visibility */
     gap: 15px; /* Add spacing between elements */
+    position: relative; /* Add this to make the tooltip position relative to the task */
 }
 
 .task:hover {
@@ -252,7 +253,7 @@ nav:nth-child(1) {
 .task:hover::after {
     content: attr(title);
     position: absolute;
-    top: 100%;
+    top: 100%; /* Position the tooltip below the task */
     left: 0;
     width: 200px;
     background-color: #f0f8ff;
@@ -523,5 +524,36 @@ button:disabled {
 
 .container {
     padding-right: 20px; /* Add padding to the right of the main container */
+}
+
+.footer {
+    margin-top: 20px;
+    text-align: center;
+    padding: 10px;
+    border-top: 2px solid #6a0dad; /* Purple accent */
+    position: relative;
+    width: 100%;
+}
+
+.premiumMessage {
+    font-size: 1.2em;
+    color: #9b30ff; /* Lighter purple for premium users */
+}
+
+.adSpace {
+    font-size: 1.2em;
+    color: #ffffff; /* White text for ads */
+    background-color: #2a2a2a; /* Dark background for ad space */
+    padding: 20px;
+    border: 2px dashed #6a0dad; /* Dashed border for ad space */
+    margin: 0 auto;
+    max-width: 600px; /* Center the ad space */
+}
+
+.taskLimitMessage {
+    font-size: 0.9em;
+    color: #cccccc; /* Light gray text */
+    margin-top: 10px;
+    text-align: center;
 }
 

@@ -22,6 +22,8 @@ const router = (app) => {
 
   app.patch('/updateTaskStatus', mid.requiresLogin, controllers.Task.updateTaskStatus);
 
+  app.get('/getUserStatus', mid.requiresLogin, controllers.Account.getUserStatus);
+
   app.get('/', mid.requiresSecure, mid.requiresLogout, controllers.Account.loginPage);
 };
 
