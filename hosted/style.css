@@ -1,23 +1,28 @@
+/* General Styles */
 html, body {
     height: 100%;
     width: 100%;
     margin: 0;
     padding: 0;
     overflow-x: hidden;
+    background-color: #121212; /* Dark background */
+    color: #ffffff; /* White text */
 }
 
+/* Logo */
 #logo {
     height: 40px;
-    width: 40;
+    width: 40px;
     padding-top: 5px;
-    float:left;
+    float: left;
     border-radius: 8px;
 }
 
+/* Navigation Bar */
 nav {
     width: 100%;
     height: 50px;
-    background-color: #55acee;
+    background-color: #6a0dad; /* Purple accent */
 }
 
 nav:nth-child(1) {
@@ -28,38 +33,38 @@ nav:nth-child(1) {
     padding: 5px;
     padding-top: 12px;
     padding-left: 20px;
-    color: white;
+    color: #ffffff;
     font-size: 1.3em;
     float: left;
 }
 
 .navlink a, .navlink a:link, .navlink a:visited, .navlink a:hover, .navlink a:active {
-    color: white;
+    color: #ffffff;
     text-decoration: none;
     padding: 5px;
     border-radius: 4px;
-    background-color: #55acee;
+    background-color: #6a0dad; /* Purple accent */
     transition: background-color 0.4s ease;
 }
 
 .navlink a:hover {
-    transition: background-color 0.8s ease;
-    background-color: #66bdff;
+    background-color: #9b30ff; /* Lighter purple for hover */
 }
 
+/* Task Form */
 .taskForm {
     position: fixed;
-    top: 50px; 
+    top: 50px;
     left: 0;
     width: 300px;
-    height: calc(100% - 50px); 
-    background-color: #55acee;
+    height: calc(100% - 50px);
+    background-color: #1e1e1e; /* Darker background for sidebar */
     padding: 20px;
-    box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+    box-shadow: 2px 0 5px rgba(0, 0, 0, 0.5);
     display: flex;
     flex-direction: column;
     gap: 15px;
-    border-right: 2px solid #338acc;
+    border-right: 2px solid #6a0dad; /* Purple accent */
 }
 
 .taskForm div {
@@ -70,20 +75,22 @@ nav:nth-child(1) {
 
 .taskForm label {
     font-size: 1.2em;
-    color: white;
+    color: #ffffff; /* White text */
 }
 
 .taskForm input {
     padding: 10px;
     border-radius: 4px;
-    border: 1px solid #338acc;
+    border: 1px solid #6a0dad; /* Purple accent */
+    background-color: #2a2a2a; /* Dark input background */
+    color: #ffffff; /* White text */
 }
 
 .makeTaskSubmit {
     padding: 10px;
     font-size: 1.1em;
-    background-color: #338acc;
-    color: white;
+    background-color: #6a0dad; /* Purple accent */
+    color: #ffffff; /* White text */
     border: none;
     border-radius: 4px;
     cursor: pointer;
@@ -93,15 +100,23 @@ nav:nth-child(1) {
 }
 
 .makeTaskSubmit:hover {
-    background-color: #66bdff;
+    background-color: #9b30ff; /* Lighter purple for hover */
 }
 
+/* Main Form */
 .mainForm {
-    height: 300px;
-    width: 350px;
-    margin: 0 auto;
-    padding-top: 350px;
-    font-size: 1.2em;
+    width: 300px;
+    padding: 20px;
+    background-color: #1e1e1e; /* Dark background */
+    border: 2px solid #6a0dad; /* Purple accent */
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.5);
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    margin-top: 20px;
+    margin-left: auto; 
+    margin-right: auto;
 }
 
 .mainForm h3 {
@@ -109,36 +124,38 @@ nav:nth-child(1) {
 }
 
 .mainForm label {
-    display: inline-block;
-    width: 100px;
-    margin-right: 10px;
-    text-align: right;
     font-size: 1.2em;
+    color: #ffffff; /* White text */
+    margin-left: auto; 
+    margin-right: auto;
+}
+
+.mainForm input {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #6a0dad; /* Purple accent */
+    border-radius: 4px;
+    font-size: 1em;
+    background-color: #2a2a2a; /* Dark input background */
+    color: #ffffff; /* White text */
+    margin-left: auto; 
+    margin-right: auto;
 }
 
 .formSubmit {
-    transition: background-color 0.4s ease;
-    display: block;
-    text-align: center;
-    margin: 0 auto;
-    margin-top: 14px;
-    font-size: 1.2em;
-    width: 100px;
-    background-color: #55acee;
-    border-radius: 2px;
-    border-color: #66acee;
-    padding: 3px 0px;
-    color: white;
-    text-decoration: none;
-}
-
-.formSubmit:link, .formSubmit:visited, .formSubmit:hover, .formSubmit:active {
-    color: white;
+    width: 100%;
+    padding: 10px;
+    font-size: 1.1em;
+    background-color: #6a0dad; /* Purple accent */
+    color: #ffffff; /* White text */
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
 }
 
 .formSubmit:hover {
-    transition: background-color 0.4s ease;
-    background-color: #338acc;
+    background-color: #9b30ff; /* Lighter purple for hover */
 }
 
 #user, #pass, #pass2 {
@@ -198,34 +215,41 @@ nav:nth-child(1) {
     transform: rotate(330deg);
 }
 
+/* Task List */
 #tasks {
     width: calc(100% - 320px);
     min-width: 500px; 
     margin-left: 320px;
-    border: 2px solid #55acee;
+    border: 2px solid #6a0dad; /* Purple accent */
     border-radius: 8px;
     margin-top: 100px;
     padding: 20px;
-    background-color: #f9f9f9;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    background-color: #1e1e1e; /* Dark background */
+    color: #ffffff; /* White text */
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.5);
 }
 
 .task {
+    display: flex; /* Use flexbox to align items horizontally */
+    align-items: center; /* Vertically align items */
     width: 100%;
     max-width: calc(100% - 40px);
     margin: 15px auto;
     padding: 20px;
-    border: 2px solid #55acee;
+    border: 2px solid #6a0dad; /* Purple accent */
     border-radius: 8px;
-    background-color: #f0f8ff;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    background-color: #2a2a2a; /* Dark background */
+    color: #ffffff; /* White text */
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.5);
     transition: background-color 0.3s ease, border-color 0.3s ease;
     position: relative;
+    gap: 15px; /* Add spacing between elements */
+    margin-right: 20px; /* Add margin to the right */
 }
 
 .task:hover {
-    background-color: #e6f7ff;
-    border-color: #338acc;
+    background-color: #3a3a3a; /* Slightly lighter dark background */
+    border-color: #9b30ff; /* Lighter purple for hover */
 }
 
 .task:hover::after {
@@ -244,6 +268,7 @@ nav:nth-child(1) {
     z-index: 10;
 }
 
+/* Task Icon */
 img.taskIcon {
     height: 50px;
     width: 50px;
@@ -251,20 +276,22 @@ img.taskIcon {
     margin-right: 15px;
 }
 
+/* Task Name */
 h3.taskName {
-    flex: 3; 
+    flex: 2; /* Allow the name to take more space */
     font-size: 1.2em;
     font-weight: bold;
-    color: #333;
+    color: #ffffff; /* White text for visibility */
     margin: 0;
     text-align: left; 
 }
 
+/* Task Priority */
 h3.taskPriority {
-    flex: 1.5; 
+    flex: 1; /* Allow priority to take less space */
     font-size: 1em;
     font-weight: bold;
-    color: #555;
+    color: #ffffff; /* White text for visibility */
     text-align: center;
     margin: 0;
 }
@@ -273,23 +300,28 @@ h3.taskStatus {
     flex: 1.5;
     font-size: 1em;
     font-weight: bold;
-    color: #555;
+    color: #ffffff; /* White text for visibility */
     text-align: center;
     margin: 0;
 }
 
+/* Checkbox Label */
 .task label {
     display: flex;
     align-items: center;
     font-size: 1em;
-    color: #333;
-    margin-left: 15px;
+    color: #ffffff; /* White text for visibility */
+    margin: 0;
+    margin-right: 10px; /* Add margin to the right */
+    gap: 5px; /* Add spacing between checkbox and label text */
 }
 
+/* Checkbox */
 .task input[type="checkbox"] {
-    margin-right: 10px;
-    transform: scale(1.2);
+    margin: 0 10px 0 0; /* Add margin to the right */
+    transform: scale(1.2); /* Make the checkbox slightly larger */
     cursor: pointer;
+    accent-color: #6a0dad; /* Purple accent for checkboxes */
 }
 
 .task:first-child {
@@ -328,33 +360,34 @@ h3.taskStatus {
 
 .taskDetailsBox {
     width: 100%;
-    max-width: 800px;
-    margin: 0 auto 20px auto; /* Center the modal and add spacing below */
+    max-width: 500px;
+    margin: 0 auto 20px auto;
     padding: 20px;
-    background-color: #f0f8ff;
-    border: 2px solid #338acc;
+    background-color: #1e1e1e; /* Dark background */
+    border: 2px solid #6a0dad; /* Purple accent */
     border-radius: 8px;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.5); /* Darker shadow */
     text-align: left;
+    color: #ffffff; /* White text */
 }
 
 .taskDetailsBox h3 {
     margin-top: 0;
     font-size: 1.5em;
-    color: #338acc;
+    color: #9b30ff; /* Lighter purple for headings */
 }
 
 .taskDetailsBox p {
     margin: 5px 0;
     font-size: 1em;
-    color: #555;
+    color: #cccccc; /* Light gray for paragraph text */
 }
 
 .closeButton {
     margin-top: 10px;
     padding: 8px 12px;
     font-size: 1em;
-    background-color: #338acc;
+    background-color: #6a0dad; /* Purple accent */
     color: white;
     border: none;
     border-radius: 4px;
@@ -363,7 +396,7 @@ h3.taskStatus {
 }
 
 .closeButton:hover {
-    background-color: #66bdff;
+    background-color: #9b30ff; /* Lighter purple for hover */
 }
 
 .controls {
@@ -371,9 +404,11 @@ h3.taskStatus {
     justify-content: space-between;
     margin-bottom: 20px;
     padding: 10px;
-    background-color: #f0f8ff;
-    border: 2px solid #338acc;
+    background-color: #1e1e1e; /* Dark background */
+    border: 2px solid #6a0dad; /* Purple accent */
     border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.5); /* Darker shadow */
+    margin-right: 20px; /* Add margin to the right */
 }
 
 .sortOptions, .taskFilter {
@@ -384,16 +419,25 @@ h3.taskStatus {
 
 .sortOptions label, .taskFilter label {
     font-size: 1.2em;
-    color: #338acc;
+    color: #ffffff; /* White text */
 }
 
 .sortOptions select, .taskFilter select {
     font-size: 1em;
     padding: 5px;
     border-radius: 4px;
-    border: 1px solid #338acc;
+    border: 1px solid #6a0dad; /* Purple accent */
+    background-color: #2a2a2a; /* Dark input background */
+    color: #ffffff; /* White text */
+    transition: border-color 0.3s ease, background-color 0.3s ease;
 }
 
+.sortOptions select:hover, .taskFilter select:hover {
+    border-color: #9b30ff; /* Lighter purple for hover */
+    background-color: #3a3a3a; /* Slightly lighter dark background */
+}
+
+/* Pagination */
 .pagination {
     display: flex;
     justify-content: center;
@@ -405,8 +449,8 @@ h3.taskStatus {
 .pagination button {
     padding: 8px 12px;
     font-size: 1em;
-    background-color: #338acc;
-    color: white;
+    background-color: #6a0dad; /* Purple accent */
+    color: #ffffff; /* White text */
     border: none;
     border-radius: 4px;
     cursor: pointer;
@@ -414,10 +458,73 @@ h3.taskStatus {
 }
 
 .pagination button:disabled {
-    background-color: #ccc;
+    background-color: #444444; /* Disabled button color */
     cursor: not-allowed;
 }
 
 .pagination button:hover:not(:disabled) {
-    background-color: #66bdff;
+    background-color: #9b30ff; /* Lighter purple for hover */
 }
+
+textarea {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #6a0dad; /* Purple accent */
+    border-radius: 4px;
+    font-size: 1em;
+    background-color: #2a2a2a; /* Dark input background */
+    color: #ffffff; /* White text */
+    resize: none; /* Prevent resizing if undesired */
+}
+
+input, textarea {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #6a0dad; /* Purple accent */
+    border-radius: 4px;
+    font-size: 1em;
+    background-color: #2a2a2a; /* Dark input background */
+    color: #ffffff; /* White text */
+}
+
+input, textarea, select {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #6a0dad; /* Purple accent */
+    border-radius: 4px;
+    font-size: 1em;
+    background-color: #2a2a2a; /* Dark input background */
+    color: #ffffff; /* White text */
+    transition: border-color 0.3s ease, background-color 0.3s ease;
+}
+
+input:focus, textarea:focus, select:focus {
+    outline: none;
+    border-color: #9b30ff; /* Lighter purple for focus */
+    background-color: #3a3a3a; /* Slightly lighter dark background */
+}
+
+button {
+    padding: 10px 15px;
+    font-size: 1em;
+    background-color: #6a0dad; /* Purple accent */
+    color: #ffffff; /* White text */
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+button:hover {
+    background-color: #9b30ff; /* Lighter purple for hover */
+}
+
+button:disabled {
+    background-color: #444444; /* Disabled button color */
+    cursor: not-allowed;
+}
+
+.container {
+    padding-right: 20px; /* Add padding to the right of the main container */
+}
+

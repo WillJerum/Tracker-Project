@@ -1,8 +1,10 @@
 const models = require('../models');
+const bcrypt = require('bcrypt');
 
 const { Account } = models;
 
 const loginPage = (req, res) => res.render('login');
+const settingsPage = (req, res) => res.render('settings');
 
 const logout = (req, res) => {
   req.session.destroy();
@@ -56,9 +58,35 @@ const signup = async (req, res) => {
   }
 };
 
+const changePassword = async (req, res) => {
+  const { newPassword } = req.body;
+
+  if (!newPassword) {
+    return res.status(400).json({ error: 'New password is required!' });
+  }
+
+  try {
+    const account = await Account.findOne({ _id: req.session.account._id }).exec();
+    if (!account) {
+      return res.status(404).json({ error: 'Account not found!' });
+    }
+
+    const hashedPassword = await Account.generateHash(newPassword);
+    account.password = hashedPassword;
+    await account.save();
+
+    return res.json({ message: 'Password changed successfully!' });
+  } catch (err) {
+    console.error(err);
+    return res.status(500).json({ error: 'An error occurred while changing the password!' });
+  }
+};
+
 module.exports = {
   loginPage,
   logout,
   login,
   signup,
+  settingsPage,
+  changePassword,
 };

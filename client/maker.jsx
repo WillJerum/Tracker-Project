@@ -214,7 +214,7 @@ const TaskList = (props) => {
                     checked={task.status}
                     onChange={() => toggleTaskStatus(task._id, task.status)} 
                 />
-                Mark as Done
+                Done
             </label>
         </div>
     ));
