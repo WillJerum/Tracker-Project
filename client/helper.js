@@ -2,9 +2,25 @@
    displays it to the user. Will be hidden by other events that could
    end in an error.
 */
-const handleError = (message) => {
-    document.getElementById('errorMessage').textContent = message;
-    document.getElementById('taskMessage').classList.remove('hidden');
+const handleError = (message, elementId) => {
+    // Remove any existing error messages
+    const existingError = document.querySelector(`#${elementId} + .errorMessage`);
+    if (existingError) {
+        existingError.remove();
+    }
+
+    // Create a new error message element
+    const errorElement = document.createElement('p');
+    errorElement.className = 'errorMessage';
+    errorElement.textContent = message;
+
+    // Insert the error message after the input field
+    const inputElement = document.getElementById(elementId);
+    if (inputElement) {
+        inputElement.parentNode.insertBefore(errorElement, inputElement.nextSibling);
+    } else {
+        console.error(`Element with ID "${elementId}" not found.`);
+    }
 };
 
 /* Sends post requests to the server using fetch. Will look for various
@@ -36,11 +52,13 @@ const sendPost = async (url, data, handler) => {
 };
 
 const hideError = () => {
-    document.getElementById('taskMessage').classList.add('hidden');
-}
+    // Remove all error messages
+    const errorMessages = document.querySelectorAll('.errorMessage');
+    errorMessages.forEach((error) => error.remove());
+};
 
 module.exports = {
     handleError,
-    sendPost,
     hideError,
-}
+    sendPost,
+};
