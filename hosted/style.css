@@ -80,7 +80,6 @@ nav:nth-child(1) {
 }
 
 .makeTaskSubmit {
-    margin-top: auto; 
     padding: 10px;
     font-size: 1.1em;
     background-color: #338acc;
@@ -89,6 +88,8 @@ nav:nth-child(1) {
     border-radius: 4px;
     cursor: pointer;
     transition: background-color 0.3s ease;
+    width: 100%; 
+    margin-top: 10px; 
 }
 
 .makeTaskSubmit:hover {
@@ -198,31 +199,49 @@ nav:nth-child(1) {
 }
 
 #tasks {
-    width: 40%;
-    min-width: 400px;
+    width: calc(100% - 320px);
+    min-width: 500px; 
+    margin-left: 320px;
     border: 2px solid #55acee;
-    border-radius: 4px;
-    margin: 0 auto;
+    border-radius: 8px;
     margin-top: 100px;
+    padding: 20px;
+    background-color: #f9f9f9;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 }
 
 .task {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    width: 98%; 
-    margin: 15px auto; 
-    padding: 20px; 
+    width: 100%;
+    max-width: calc(100% - 40px);
+    margin: 15px auto;
+    padding: 20px;
     border: 2px solid #55acee;
     border-radius: 8px;
     background-color: #f0f8ff;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
     transition: background-color 0.3s ease, border-color 0.3s ease;
+    position: relative;
 }
 
 .task:hover {
     background-color: #e6f7ff;
     border-color: #338acc;
+}
+
+.task:hover::after {
+    content: attr(title);
+    position: absolute;
+    top: 100%;
+    left: 0;
+    width: 200px;
+    background-color: #f0f8ff;
+    color: #333;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    white-space: pre-wrap;
+    z-index: 10;
 }
 
 img.taskIcon {

@@ -9,45 +9,22 @@ const handleTask = (e, onTaskAdded) => {
 
     const name = e.target.querySelector('#taskName').value.trim();
     const priority = e.target.querySelector('#taskPriority').value.trim();
+    const description = e.target.querySelector('#taskDescription').value.trim();
+
+    console.log({ name, priority, description }); // Debugging: Check the values being sent
 
     if (!name || !priority) {
         helper.handleError('All fields are required!');
         return false;
     }
 
-    // Send name, priority, and default status (false)
-    helper.sendPost(e.target.action, { name, priority, status: false }, () => onTaskAdded(name, priority));
+        helper.sendPost(e.target.action, { name, priority, description, status: false }, () => onTaskAdded(name, priority, description));
     return false;
 }
 
-const makeTask = async (req, res) => {
-    if (!req.body.name || !req.body.priority) {
-        return res.status(400).json({ error: 'Name and priority are required!' });
-    }
-
-    const taskData = {
-        name: req.body.name,
-        priority: req.body.priority,
-        status: false, // Default to false
-        owner: req.session.account._id,
-    };
-
-    try {
-        const newTask = new Task(taskData);
-        await newTask.save();
-        return res.status(201).json({ name: newTask.name, priority: newTask.priority, status: newTask.status });
-    } catch (err) {
-        console.log(err);
-        if (err.code === 11000) {
-            return res.status(400).json({ error: 'Task already exists!' });
-        }
-        return res.status(500).json({ error: 'An error occurred creating task!' });
-    }
-};
-
 const TaskForm = (props) => {
     return (
-        <form
+<form
             id="taskForm"
             onSubmit={(e) => handleTask(e, props.triggerReload)}
             name="taskForm"
@@ -63,6 +40,10 @@ const TaskForm = (props) => {
                 <label htmlFor="priority">Priority: </label>
                 <input id="taskPriority" type="number" min="0" name="priority" />
             </div>
+            <div>
+                <label htmlFor="description">Description: </label>
+                <textarea id="taskDescription" name="description" placeholder="Task Description (optional)" rows="3"></textarea>
+            </div>
             <input className="makeTaskSubmit" type="submit" value="Make Task" />
         </form>
     );
@@ -76,6 +57,7 @@ const TaskList = (props) => {
         const loadTasksFromServer = async () => {
             const response = await fetch('/getTasks');
             const data = await response.json();
+            console.log(data.tasks); // Debugging: Check if description is included
             setTasks(data.tasks);
         };
         loadTasksFromServer();
@@ -118,7 +100,7 @@ const TaskList = (props) => {
     }
 
     const taskNodes = sortedTasks.map((task) => (
-        <div key={task._id} className="task">
+        <div key={task._id} className="task" title={task.description || 'No description provided'}>
             <img src="/assets/img/clipboard.png" alt="task icon" className="taskIcon" />
             <h3 className="taskName">{task.name}</h3>
             <h3 className="taskPriority">Priority: {task.priority}</h3>
@@ -128,7 +110,7 @@ const TaskList = (props) => {
                     checked={task.status}
                     onChange={() => toggleTaskStatus(task._id, task.status)}
                 />Mark as Done</label>
-        </div>
+</div>
     ));
 
     return (

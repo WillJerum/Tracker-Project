@@ -5,21 +5,27 @@ const { Task } = models;
 const makerPage = (req, res) => res.render('app');
 
 const makeTask = async (req, res) => {
-  if (!req.body.name || !req.body.priority || req.body.status === undefined) {
-    return res.status(400).json({ error: 'All fields are required!' });
+  if (!req.body.name || !req.body.priority) {
+    return res.status(400).json({ error: 'Name and priority are required!' });
   }
 
   const taskData = {
     name: req.body.name,
     priority: req.body.priority,
-    status: !!req.body.status, // Ensure status is a Boolean
+    description: req.body.description || '', // Default to an empty string if not provided
+    status: false, // Default to false
     owner: req.session.account._id,
   };
 
   try {
     const newTask = new Task(taskData);
     await newTask.save();
-    return res.status(201).json({ name: newTask.name, priority: newTask.priority, status: newTask.status });
+    return res.status(201).json({ 
+      name: newTask.name, 
+      priority: newTask.priority, 
+      description: newTask.description, 
+      status: newTask.status 
+    });
   } catch (err) {
     console.log(err);
     if (err.code === 11000) {
@@ -32,7 +38,7 @@ const makeTask = async (req, res) => {
 const getTasks = async (req, res) => {
   try {
     const query = { owner: req.session.account._id };
-    const docs = await Task.find(query).select('name priority status').lean().exec();
+    const docs = await Task.find(query).select('name priority status description').lean().exec();
 
     return res.json({ tasks: docs });
   } catch (err) {

@@ -20,6 +20,10 @@ const TaskSchema = new mongoose.Schema({
     min: 1,
     required: true,
   },
+  description: {
+    type: String,
+    default: '', 
+  },
   owner: {
     type: mongoose.Schema.ObjectId,
     required: true,
