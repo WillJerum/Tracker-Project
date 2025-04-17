@@ -1,5 +1,4 @@
 const models = require('../models');
-const bcrypt = require('bcrypt');
 
 const { Account } = models;
 

@@ -22,7 +22,7 @@ const TaskSchema = new mongoose.Schema({
   },
   description: {
     type: String,
-    default: '', 
+    default: '',
   },
   owner: {
     type: mongoose.Schema.ObjectId,

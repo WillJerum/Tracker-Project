@@ -22,11 +22,11 @@ const makeTask = async (req, res) => {
   try {
     const newTask = new TaskModel(taskData);
     await newTask.save();
-    return res.status(201).json({ 
-      name: newTask.name, 
-      priority: newTask.priority, 
-      description: newTask.description, 
-      status: newTask.status 
+    return res.status(201).json({
+      name: newTask.name,
+      priority: newTask.priority,
+      description: newTask.description,
+      status: newTask.status,
     });
   } catch (err) {
     console.log(err);
@@ -58,9 +58,9 @@ const updateTaskStatus = async (req, res) => {
 
   try {
     const updatedTask = await TaskModel.findOneAndUpdate(
-      { _id: req.body.taskId, owner: req.session.account._id }, // Ensure the task belongs to the user
+      { _id: req.body.taskId, owner: req.session.account._id }, // Ensure the task belongs to user
       { status: req.body.status }, // Update the status field
-      { new: true } // Return the updated document
+      { new: true }, // Return the updated document
     ).select('name priority status').lean();
 
     if (!updatedTask) {

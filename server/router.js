@@ -4,7 +4,6 @@ const mid = require('./middleware');
 console.log('controllers:', controllers);
 
 const router = (app) => {
-
   app.get('/settings', mid.requiresLogin, controllers.Account.settingsPage);
   app.post('/changePassword', mid.requiresLogin, controllers.Account.changePassword);
 
