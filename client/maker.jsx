@@ -7,24 +7,48 @@ const handleTask = (e, onTaskAdded) => {
     e.preventDefault();
     helper.hideError();
 
-    const name = e.target.querySelector('#taskName').value;
-    const priority = e.target.querySelector('#taskPriority').value;
-    const status = e.target.querySelector('#taskStatus').checked;
+    const name = e.target.querySelector('#taskName').value.trim();
+    const priority = e.target.querySelector('#taskPriority').value.trim();
 
     if (!name || !priority) {
         helper.handleError('All fields are required!');
         return false;
     }
 
-    helper.sendPost(e.target.action, {name, priority, status}, () => onTaskAdded(name, priority, status));
+    // Send name, priority, and default status (false)
+    helper.sendPost(e.target.action, { name, priority, status: false }, () => onTaskAdded(name, priority));
     return false;
 }
 
+const makeTask = async (req, res) => {
+    if (!req.body.name || !req.body.priority) {
+        return res.status(400).json({ error: 'Name and priority are required!' });
+    }
 
+    const taskData = {
+        name: req.body.name,
+        priority: req.body.priority,
+        status: false, // Default to false
+        owner: req.session.account._id,
+    };
+
+    try {
+        const newTask = new Task(taskData);
+        await newTask.save();
+        return res.status(201).json({ name: newTask.name, priority: newTask.priority, status: newTask.status });
+    } catch (err) {
+        console.log(err);
+        if (err.code === 11000) {
+            return res.status(400).json({ error: 'Task already exists!' });
+        }
+        return res.status(500).json({ error: 'An error occurred creating task!' });
+    }
+};
 
 const TaskForm = (props) => {
-    return(
-        <form id="taskForm"
+    return (
+        <form
+            id="taskForm"
             onSubmit={(e) => handleTask(e, props.triggerReload)}
             name="taskForm"
             action="/maker"
@@ -39,14 +63,10 @@ const TaskForm = (props) => {
                 <label htmlFor="priority">Priority: </label>
                 <input id="taskPriority" type="number" min="0" name="priority" />
             </div>
-            <div>
-                <label htmlFor="status">Status: </label>
-                <input id="taskStatus" type="checkbox" name="status" />
-            </div>
             <input className="makeTaskSubmit" type="submit" value="Make Task" />
         </form>
     );
-}
+};
 
 const TaskList = (props) => {
     const [tasks, setTasks] = useState([props.tasks]);
@@ -102,7 +122,6 @@ const TaskList = (props) => {
             <img src="/assets/img/clipboard.png" alt="task icon" className="taskIcon" />
             <h3 className="taskName">{task.name}</h3>
             <h3 className="taskPriority">Priority: {task.priority}</h3>
-            <h3 className="taskStatus">Done?: {task.status ? 'Yes' : 'No'}</h3> 
             <label>
                 <input
                     type="checkbox"
